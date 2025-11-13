@@ -1,0 +1,81 @@
+﻿.port-layout {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    min-width: 220px;
+}
+
+.anchorage-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.anchorage {
+    --grid-size: 20px;
+    --grid-line-color: #e2e8f0;    
+    width: calc(var(--w) * 1px);
+    height: calc(var(--h) * 1px);
+    background-color: #f8fafc;
+    background-image: linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+    background-size: var(--grid-size) var(--grid-size);
+    border: 2px dashed #64748b;
+    border-radius: 8px;
+    position: relative;
+    box-sizing: content-box;
+}
+
+.dock-title {
+    font-weight: 600;
+}
+
+.dock {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: .75rem;
+    align-items: flex-start;
+    max-width: 100%;
+}
+
+.dock-group {
+    flex: 0 1 240px;
+    box-sizing: border-box;
+    border: 1px solid rgba(99,102,241,0.08);
+    padding: .5rem;
+    border-radius: 6px;
+    background: #fbfdff;
+}
+
+.group-header {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: .5rem;
+}
+
+.group-items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: .5rem;
+    align-items: flex-start;
+}
+
+.drag-capture {
+    position: fixed;
+    inset: 0;
+    cursor: grabbing;
+    z-index: 10000;
+}

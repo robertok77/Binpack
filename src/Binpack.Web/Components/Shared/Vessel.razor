@@ -1,0 +1,41 @@
+﻿<div class="vessel @Class"
+     style="--w:@Width; --h:@Height; --x:@X; --y:@Y;"
+     title="@Title"
+     @onmousedown="HandleMouseDown"
+     @attributes="AdditionalAttributes">
+
+    @ChildContent
+
+    @if (ShowRotateButton)
+    {
+        <button class="rotate-btn"
+                title="Rotate 90°"
+                @onclick="OnRotate"
+                @onclick:stopPropagation="true"
+                @onmousedown:stopPropagation="true">
+            ⤾
+        </button>
+    }
+</div>
+
+@code {
+    [Parameter] public double Width { get; set; }
+    [Parameter] public double Height { get; set; }
+    [Parameter] public double X { get; set; }
+    [Parameter] public double Y { get; set; }
+
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Class { get; set; }
+    
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    
+    [Parameter] public EventCallback<MouseEventArgs> OnMouseDown { get; set; }
+    [Parameter] public EventCallback OnRotate { get; set; }
+    
+    [Parameter] public bool ShowRotateButton { get; set; } = true;
+    
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private Task HandleMouseDown(MouseEventArgs e) => OnMouseDown.InvokeAsync(e);
+}

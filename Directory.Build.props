@@ -1,0 +1,25 @@
+<Project>
+  <!-- Global project properties -->
+  <PropertyGroup>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <ArtifactsPath>$(SolutionDir)artifacts</ArtifactsPath>
+  </PropertyGroup>
+  
+  <!-- Global usings -->
+  <ItemGroup>
+    <Using Include="System" />
+    <Using Include="System.Data" />
+    <Using Include="System.Collections" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Diagnostics.CodeAnalysis" />
+    <Using Include="System.IO" />
+    <Using Include="System.Linq" />
+    <Using Include="System.Text" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) == 'false'">
+      <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+      <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+  </ItemGroup>
+  
+</Project>

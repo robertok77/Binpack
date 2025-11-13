@@ -1,0 +1,74 @@
+﻿@page "/"
+<h4>Port</h4>
+@if (!ViewModel.HasData)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="port-layout">
+        <div class="left">
+            <div class="anchorage-header">
+                @if (ViewModel.State.Fleet.IsAllVesselsInAnchorage)
+                {
+                    <button class="btn btn-primary" @onclick="ViewModel.New">Try again</button>
+                }
+                <button class="btn btn-secondary" @onclick="ViewModel.Reset">Reset</button>
+                @if (ViewModel.State.Fleet.IsAllVesselsInAnchorage)
+                {
+                    <span>Congratulations!</span>
+                }
+            </div>
+            @{
+                var aw = ViewModel.State.Anchorage.AnchorageWidth;
+                var ah = ViewModel.State.Anchorage.AnchorageHeight;
+            }
+            <div class="anchorage"
+                 style="--w:@aw; --h:@ah;"
+                 title="Drag vessels in here"
+                 @ref="anchorageRef">
+                @foreach (var v in ViewModel.State.Fleet.VesselsInAnchorage)
+                {
+                    <Vessel Width="@v.CurrentWidth"
+                            Height="@v.CurrentHeight"
+                            X="@v.State.X"
+                            Y="@v.State.Y"
+                            Title="@v.DisplayName"
+                            OnMouseDown="(e) => ViewModel.StartDrag(v, e.GetClient(), e.GetOffset())"
+                            OnRotate="() => ViewModel.Rotate(v)">
+                    </Vessel>
+                }
+            </div>
+        </div>
+        <div class="right">
+            <div class="dock-title">Vessels</div>
+            <div class="dock">
+                @foreach (var group in ViewModel.State.Fleet.VesselsByDesignation())
+                {
+                    <div class="dock-group" title="@group.ShipDesignation">
+                        <div class="group-header">@group.ShipDesignation @($"({group.Vessels.Count()})")</div>
+                        <div class="group-items">
+                            @foreach (var v in group.Vessels)
+                            {
+                                <Vessel Class="in-dock"
+                                        Width="@v.CurrentWidth"
+                                        Height="@v.CurrentHeight"
+                                        Title="@v.DisplayName"
+                                        OnMouseDown="(e) => ViewModel.StartDrag(v, e.GetClient(), e.GetOffset())"
+                                        OnRotate="() => ViewModel.Rotate(v)">
+                                </Vessel>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @if (ViewModel.State.IsDragging)
+    {
+        var vs = ViewModel.State.DraggedVessel;
+        <div class="drag-capture" @onmousemove="e => ViewModel.OnDrag(e.GetClient())" @onmouseup="e => ViewModel.EndDrag(e.GetClient())">
+            <Vessel Class="ghost" Width="@vs!.Vessel.CurrentWidth" Height="@vs!.Vessel.CurrentHeight" X="@vs!.GhostLeft" Y="@vs!.GhostTop" ShowRotateButton=false />
+        </div>
+    }
+}

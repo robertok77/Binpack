@@ -1,0 +1,26 @@
+﻿@inherits ErrorBoundary
+@inject ILogger<GlobalErrorBoundary> Logger
+
+<ErrorBoundary @ref="_boundary">
+    <ChildContent>
+        @ChildContent
+    </ChildContent>
+    <ErrorContent Context="ex">
+        <div class="alert alert-danger">
+            An unexpected error occurred.
+            <button class="btn btn-link" @onclick="Recover">Try again</button>
+        </div>
+    </ErrorContent>
+</ErrorBoundary>
+
+@code {
+    private ErrorBoundary? _boundary;
+    
+    protected override Task OnErrorAsync(Exception exception)
+    {
+        Logger.LogError(exception, "Unhandled UI exception");
+        return Task.CompletedTask;
+    }
+
+    private new void Recover() => _boundary?.Recover();
+}
